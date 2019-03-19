@@ -11,82 +11,31 @@ frame_one.grid(column=0, row=0)
 frame_two = tk.Frame(root)
 frame_two.grid(column=0, row=1)
 
-frame_three = tk.Frame(root)
-frame_three.grid(column=0, row=3)
 
-frame_four = tk.Frame(root)
-frame_four.grid(column=0, row=4)
 
-num1 = []
-num2 = []
-operation = []
 all_row = []
 
-
 def show_pressed_button(event, text):
-    if len(operation) == 0:
-        num1.append(text)
-        all_row.append(text)
-        display.configure(text=all_row)
-    else:
-        num2.append(text)
-        all_row.append(text)
-        display.configure(text=all_row)
-
-
-
-def operation_button(event, text):
-    operation.append(text)
     all_row.append(text)
     display.configure(text=all_row)
 
+def button_equally_pressed(event):
+    display.configure(text=eval(''.join(all_row)))
+    all_row.clear()
 
-def result_button(event):
-    a = float(''.join(num1))
-    b = float(''.join(num2))
-
-    if operation == ['+']:
-        display.configure(text=a+b)
-        all_row.clear()
-        num1.clear()
-        num2.clear()
-        operation.clear()
-
-    if operation == ['-']:
-        display.configure(text=a-b)
-        all_row.clear()
-        num1.clear()
-        num2.clear()
-        operation.clear()
-
-    if operation == ['*']:
-        display.configure(text=a*b)
-        all_row.clear()
-        num1.clear()
-        num2.clear()
-        operation.clear()
-
-    if operation == ['/']:
-        display.configure(text=a / b)
-        all_row.clear()
-        num1.clear()
-        num2.clear()
-        operation.clear()
+def button_c_pressed(event):
+    all_row.pop(-1)
+    display.configure(text=all_row)
 
 
-
-
-
-
-
-display = tk.Label(frame_one, bg='white', text='0', font=font_main, justify=tk.RIGHT, width=11)
+display = tk.Label(frame_one, bg='white', text='0', font=font_main, justify=tk.RIGHT, width=17)
 display.grid(row=0, padx=1, pady=1)
 
-button_c = tk.Button(frame_one, text='C', font=font_main, width=3, height=1)
-button_c.grid(column=2, row=0)
 
-button_backspace = tk.Button(frame_one, text='00->0', font=font_main, width=3, height=1)
-button_backspace.grid(column=3, row=0)
+button_c = tk.Button(frame_one, text='C', font=font_main, width=3, height=1)
+button_c.bind("<Button-1>", button_c_pressed)
+button_c.grid(column=3, row=0)
+
 
 button_one = tk.Button(frame_two, text='1', font=font_main, width=3, height=1)
 button_one.bind("<Button-1>", lambda event, text='1':show_pressed_button(event, text))
@@ -104,7 +53,7 @@ button_three.grid(column=2, row=4)
 
 
 button_plus = tk.Button(frame_two,text='+', font=font_main, width=3, height=1)
-button_plus.bind("<Button-1>", lambda event, text='+':operation_button(event, text))
+button_plus.bind("<Button-1>", lambda event, text='+':show_pressed_button(event, text))
 button_plus.grid(column=3, row=4)
 
 
@@ -124,7 +73,7 @@ button_six.grid(column=2, row=3)
 
 
 button_minus = tk.Button(frame_two, text='-', font=font_main, width=3, height=1)
-button_minus.bind("<Button-1>", lambda event, text='-':operation_button(event, text))
+button_minus.bind("<Button-1>", lambda event, text='-':show_pressed_button(event, text))
 button_minus.grid(column=3, row=3)
 
 
@@ -144,7 +93,7 @@ button_nine.grid(column=2, row=2)
 
 
 button_multiply = tk.Button(frame_two,text='*', font=font_main, width=3, height=1)
-button_multiply.bind("<Button-1>", lambda event, text='*':operation_button(event, text))
+button_multiply.bind("<Button-1>", lambda event, text='*':show_pressed_button(event, text))
 button_multiply.grid(column=3, row=2)
 
 
@@ -159,12 +108,12 @@ button_dot.grid(column=1, row=5)
 
 
 button_equally = tk.Button(frame_two, text='=', font=font_main, bg='grey', width=3, height=1)
-button_equally.bind("<Button-1>", result_button)
+button_equally.bind("<Button-1>", button_equally_pressed)
 button_equally.grid(column=2, row=5)
 
 
 button_division = tk.Button(frame_two, text='/', font=font_main, width=3, height=1)
-button_division.bind("<Button-1>", lambda event, text='/':operation_button(event, text))
+button_division.bind("<Button-1>", lambda event, text='/':show_pressed_button(event, text))
 button_division.grid(column=3, row=5)
 
 
